@@ -1,0 +1,3 @@
+export
+SERIES_FOLDER = STM32F4xx
+
