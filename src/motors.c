@@ -2,7 +2,7 @@
 
 #include "util.h"
 
-void initMotors() {
+void initMotors(void) {
   // turn on the GPIOA, GPIOB peripheral and TIM2, TIM4 peripheral
   RCC->AHB1ENR |= RCC_AHB1ENR_GPIOAEN;
   RCC->AHB1ENR |= RCC_AHB1ENR_GPIOBEN;
@@ -14,7 +14,8 @@ void initMotors() {
   TIM4->CR1 |= TIM_CR1_ARPE;
 
   // set prescaler and auto-reload values to set frequency
-  // frequency = clock / (PSC * ARR); 320,000 = 16,000,000 / (5 * 10)
+  // frequency = APB clock / (PSC * ARR);
+  // 328,000 = 16,000,000 / ((0 + 1) * (49 + 1))
   TIM2->PSC = 0;
   TIM2->ARR = ARR_VAL;
   TIM4->PSC = 0;
@@ -54,7 +55,7 @@ void setMotorDuty(MotorName motorName, uint16_t duty) {
 }
 
 // PA1 (TIM2_CH2) -> M1
-void initM1() {
+void initM1(void) {
   // set PA1 mode to AF
   GPIOA->MODER |= GPIO_MODER_MODER1_1;
   // set PA1 speed very high
@@ -74,7 +75,7 @@ void initM1() {
 }
 
 // PB11 (TIM2_CH4) -> M2
-void initM2() {
+void initM2(void) {
   // set PB11 mode to AF
   GPIOB->MODER |= GPIO_MODER_MODER11_1;
   // set PB11 speed very high
@@ -94,7 +95,7 @@ void initM2() {
 }
 
 // PA15 (TIM2_CH1) -> M3
-void initM3() {
+void initM3(void) {
   // set PA15 mode to AF
   GPIOA->MODER |= GPIO_MODER_MODER15_1;
   // set PA15 speed very high
@@ -114,7 +115,7 @@ void initM3() {
 }
 
 // PB9 (TIM4_CH4) -> M4
-void initM4() {
+void initM4(void) {
   // set PB9 mode to AF
   GPIOB->MODER |= GPIO_MODER_MODER9_1;
   // set PB9 speed very high
@@ -133,7 +134,7 @@ void initM4() {
   TIM4->CCR4 = DUTY(0);
 }
 
-void testMotors() {
+void testMotors(void) {
   setMotorDuty(M1, 25);
   delay(500);
   setMotorDuty(M1, 0);
