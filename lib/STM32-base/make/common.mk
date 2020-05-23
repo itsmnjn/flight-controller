@@ -11,6 +11,9 @@ endif
 STM32_BASE_PATH   ?= ./lib/STM32-base
 STM32_CUBE_PATH   ?= ./lib/STM32-base-STM32Cube
 
+# BMI driver library folders
+BMI_LIB_PATH ?= ./lib/BMI08x-Sensor-API
+
 # STM32-base sub-folders
 BASE_LINKER   = $(STM32_BASE_PATH)/linker
 BASE_MAKE     = $(STM32_BASE_PATH)/make
@@ -124,6 +127,10 @@ ifdef USE_ST_HAL
     HAL_SRC := $(shell find $(STM32_CUBE_PATH)/HAL/$(SERIES_FOLDER)/src/*.c ! -name '*_template.c')
     SRC += $(HAL_SRC)
 endif
+
+# Include BMI driver library
+CPPFLAGS += -I$(BMI_LIB_PATH)/inc
+CPPFLAGS += -L$(BMI_LIB_PATH) -lbmi
 
 # Make all
 all:$(BIN_FILE_PATH)
